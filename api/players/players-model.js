@@ -19,8 +19,12 @@ async function add (player) {
 async function remove(id) {
     const player = await db('players').where({id}).first()
 
-    await db('players').where({id}).delete()
-
-    return player
+    const response = await db('players').where({id}).delete()
+    if(!!response){
+        return player
+    }
+    else {
+        return {message: 'could not delete player'}
+    }
 }
 

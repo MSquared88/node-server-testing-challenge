@@ -43,7 +43,8 @@ describe('players model', () => {
 			const players = await db('players')
 			expect(players).toHaveLength(0)
 		})
-		it('should return  removed player', async () => {
+
+		it('should return removed player', async () => {
 			const player = await playerModel.add({name: 'matthew', sport: 'coding'})
 
 			const initial = await db('players')
@@ -52,6 +53,17 @@ describe('players model', () => {
 			const deletedPlayer = await playerModel.remove(player.id)
 	
 			expect(deletedPlayer.name).toBe('matthew')
+		})
+
+		it('should return message: "could not delete player" if id is invalid', async () => {
+			const player = await playerModel.add({name: 'matthew', sport: 'coding'})
+
+			const initial = await db('players')
+			expect(initial).toHaveLength(1)
+	
+			const deletedPlayer = await playerModel.remove(4)
+	
+			expect(deletedPlayer.message).toBe('could not delete player')
 		})
 	})
 })
